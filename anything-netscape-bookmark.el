@@ -26,7 +26,7 @@
 
 ;; Chromeのブックマークマネージャーからエクスポートしたブックマークファイルの内容を、
 ;; anythingするためのanything-sourceです。
-;; そのファイル形式が NETSCAPE-Bookmark-file-1 という名前でした。
+;; そのファイル形式が NETSCAPE-Bookmark-file-1 だったためこの名前になっています。
 
 ;; 作成にあたって、
 ;; anything-hatena-bookmark(http://github.com/k1LoW/anything-hatena-bookmark)を参考にさせていただきました。
