@@ -26,7 +26,7 @@
 
 ;; Netscapeのブックマークマネージャーからエクスポートしたブックマークファイルの内容を、
 ;; anythingするためのanything-sourceです。
-;; そのファイル形式が NETSCAPE-Bookmark-file-1 だったためこの名前になっています。
+;; エクスポートされたファイル形式が [NETSCAPE-Bookmark-file-1] だったためこの名前になっています。
 
 ;; 作成にあたって、
 ;; anything-hatena-bookmark(http://github.com/k1LoW/anything-hatena-bookmark)を参考にさせていただきました。
@@ -52,7 +52,7 @@
   :group 'anything
   )
 (defcustom anything-netscape-bookmark-dump-file
-  "~/emacs-netscape-bookmarks"
+  "~/.emacs.d/emacs-netscape-bookmarks"
   "anything用に加工済のBookmarkファイル"
   :type 'string
   :group 'anything
@@ -65,7 +65,7 @@
   "Get Netscape Bookmark dump file."
   (interactive)
   (let(
-       (bokkmark-buffer (get-buffer-create "*netscape bookmark dump*"))
+       (bokkmark-buffer (get-buffer-create "*anything netscape bookmark dump*"))
        (list '())
        )
     (switch-to-buffer bokkmark-buffer)
