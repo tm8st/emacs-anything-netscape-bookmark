@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;; Chromeのブックマークマネージャーからエクスポートしたブックマークファイルの内容を、
+;; Netscapeのブックマークマネージャーからエクスポートしたブックマークファイルの内容を、
 ;; anythingするためのanything-sourceです。
 ;; そのファイル形式が NETSCAPE-Bookmark-file-1 だったためこの名前になっています。
 
@@ -45,17 +45,27 @@
 (require 'xml)
 (require 'sha1)
 
-(defvar anything-netscape-bookmark-file "~/Documents/ChromeBookmark/Bookmarks.html")
-(defvar anything-netscape-bookmark-dump-file "~/emacs-chrome-bookmarks")
+(defcustom anything-netscape-bookmark-file
+  "~/Documents/Bookmarks.html"
+  "Bookmarkの元ファイル。ChromeのExport等で作成されたものを使用。"
+  :type 'string
+  :group 'anything
+  )
+(defcustom anything-netscape-bookmark-dump-file
+  "~/emacs-netscape-bookmarks"
+  "anything用に加工済のBookmarkファイル"
+  :type 'string
+  :group 'anything
+  )
 (defvar anything-netscape-bookmark-candidate-number-limit 9999)
 (defvar anything-netscape-bookmark-requires-pattern 3)
 (defvar anything-netscape-bookmark-samewindow anything-samewindow)
 
 (defun anything-netscape-bookmark-get-dump ()
-  "Get Chrome::Bookmark dump file."
+  "Get Netscape Bookmark dump file."
   (interactive)
   (let(
-       (bokkmark-buffer (get-buffer-create "*chrome bookmark dump*"))
+       (bokkmark-buffer (get-buffer-create "*netscape bookmark dump*"))
        (list '())
        )
     (switch-to-buffer bokkmark-buffer)
@@ -70,8 +80,8 @@
     (write-file anything-netscape-bookmark-dump-file)
     (kill-buffer (current-buffer))))
 
-(setq anything-c-source-chrome-bookmark
-  `((name . "Chrome::Bookmark")
+(defvar anything-c-source-netscape-bookmark
+  `((name . "Netscape Bookmark")
     (init
      . (lambda ()
            (with-current-buffer (anything-candidate-buffer 'global)
@@ -85,18 +95,19 @@
      ("Browse URL" . (lambda (candidate)
                        (browse-url candidate)))
      ("Show URL" . (lambda (candidate)
-                     (message candidate))))))
+                     (message candidate)))
+     ("Insert URL" . (lambda (candidate)
+                     (insert candidate)))))
+  "")
 
 (defun anything-netscape-bookmark ()
-  "Search Chrome::Bookmark using `anything'."
+  "Search Netscape Bookmark using `anything'."
   (interactive)
   (let ((anything-samewindow anything-netscape-bookmark-samewindow))
     (unless (file-exists-p anything-netscape-bookmark-dump-file)
       (anything-netscape-bookmark-get-dump))
     (anything
-     '(anything-c-source-chrome-bookmark) nil "Find Bookmark: " nil nil)))
+     '(anything-c-source-netscape-bookmark) nil "Find Bookmark: " nil nil)))
 
 (provide 'anything-netscape-bookmark)
 
-;;; end
-;;; anything-netscape-bookmark.el ends here
