@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;; Chromeなどブラウザからエクスポートしたブックマークファイルの内容を、
+;; Chromeなどのブラウザからエクスポートしたブックマークファイルの内容を、
 ;; anythingするためのanything-sourceです。
 ;; エクスポートされたファイル形式が [NETSCAPE-Bookmark-file-1] だったためこの名前になっています。
 
@@ -41,9 +41,6 @@
 
 (eval-when-compile (require 'cl))
 (require 'anything)
-(require 'url)
-(require 'xml)
-(require 'sha1)
 
 (defcustom anything-netscape-bookmark-file
   "~/Documents/Bookmarks.html"
