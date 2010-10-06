@@ -18,13 +18,13 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received ba  copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.	If not, write to the
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
 
-;; Netscapeのブックマークマネージャーからエクスポートしたブックマークファイルの内容を、
+;; Chromeなどブラウザからエクスポートしたブックマークファイルの内容を、
 ;; anythingするためのanything-sourceです。
 ;; エクスポートされたファイル形式が [NETSCAPE-Bookmark-file-1] だったためこの名前になっています。
 
@@ -73,24 +73,24 @@
     (goto-char (point-min))
     (while (re-search-forward "HREF=\"http\\([s]\\)?:\\([a-zA-Z.-_?#0-9]+\\)" nil t)
       (let* ((url (substring (match-string 0) 6))
-	     (title-start (re-search-forward ">" nil t))
-	     (title-end (- (re-search-forward "<" nil t) 1))
-	     (title (buffer-substring-no-properties title-start title-end)))
-	(add-to-list 'list (concat title "[HREF=" url "]\n"))
-	))
+             (title-start (re-search-forward ">" nil t))
+             (title-end (- (re-search-forward "<" nil t) 1))
+             (title (buffer-substring-no-properties title-start title-end)))
+        (add-to-list 'list (concat title "[HREF=" url "]\n"))
+        ))
     (delete-region (point-min) (point-max))
     (goto-char (point-min))
     (dolist (i list)
-	    (insert i))
+            (insert i))
     (write-file anything-netscape-bookmark-dump-file)
     (kill-buffer (current-buffer))))
 
-(setq anything-c-source-netscape-bookmark
+(defvar anything-c-source-netscape-bookmark
   `((name . "Netscape Bookmark")
     (init
      . (lambda ()
-	 (with-current-buffer (anything-candidate-buffer 'global)
-	   (insert-file-contents ,anything-netscape-bookmark-dump-file))))
+         (with-current-buffer (anything-candidate-buffer 'global)
+           (insert-file-contents ,anything-netscape-bookmark-dump-file))))
     (candidates-in-buffer)
     (candidate-number-limit . ,anything-netscape-bookmark-candidate-number-limit)
     (requires-pattern . ,anything-netscape-bookmark-requires-pattern)    
@@ -98,15 +98,14 @@
     ;; (multiline)
     (action
      ("Browse URL" . (lambda (candidate)
-		     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
+                     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
                      (browse-url (match-string 1 candidate))))
      ("Show URL"   . (lambda (candidate)
-		     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
-		     (message (match-string 1 candidate))))
-     ("Insert URL" . (lambda (candidate)		       
-		     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
-		     (insert (match-string 1 candidate))))
-     )
+                     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
+                     (message (match-string 1 candidate))))
+     ("Insert URL" . (lambda (candidate)                       
+                     (string-match "\\[HREF=\\(.+\\)\\]$" candidate)
+                     (insert (match-string 1 candidate)))))
     ))
 
 (defun anything-netscape-bookmark ()
